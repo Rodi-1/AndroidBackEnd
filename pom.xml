@@ -55,13 +55,13 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-<!--        &lt;!&ndash; Swagger — это набор инструментов для разработчиков API от SmartBear Software и бывшая спецификация,-->
-<!--             на которой основана спецификация OpenAPI&ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>io.springfox</groupId>-->
-<!--            <artifactId>springfox-boot-starter</artifactId>-->
-<!--            <version>3.0.0</version>-->
-<!--        </dependency>-->
+        <!-- Swagger — это набор инструментов для разработчиков API от SmartBear Software и бывшая спецификация,
+             на которой основана спецификация OpenAPI-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version>
+        </dependency>
 
 
 
