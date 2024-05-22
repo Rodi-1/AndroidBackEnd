@@ -6,6 +6,7 @@ import com.rodi1.androidbackend.dao.AuthorityRepository;
 import com.rodi1.androidbackend.dao.UserRepository;
 import com.rodi1.androidbackend.entity.Authority;
 import com.rodi1.androidbackend.entity.User;
+import com.rodi1.androidbackend.exception.UserAlreadyExistsException;
 import com.rodi1.androidbackend.exception.UserNotFoundException;
 import com.rodi1.androidbackend.mapper.UserMapper;
 import com.rodi1.androidbackend.service.UserService;
@@ -30,7 +31,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserProfileDto add(UserRegisterDto userRegisterDto) {
         if (userRepository.findByUsername(userRegisterDto.getUsername()).isPresent())
-            throw new RuntimeException("User with username " + userRegisterDto.getUsername() + " already exists"); // TODO: Change this exception
+            throw new UserAlreadyExistsException("User with username " + userRegisterDto.getUsername() + " already exists");
 
         Optional<Authority> authorityOptional = authorityRepository.findByAuthority("ROLE_USER");
         if (!authorityOptional.isPresent())
@@ -83,6 +84,23 @@ public class UserServiceImpl implements UserService {
 
         User save = userRepository.save(user);
         return UserMapper.toUserProfileDto(save);
+    }
+
+    @Override
+    public void update(Long id, Authority authority) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (!userOptional.isPresent()) throw new UserNotFoundException("User with ID " + id + " not found");
+        Optional<Authority> authorityOptional = authorityRepository.findByAuthority(authority.getAuthority());
+        if (!authorityOptional.isPresent()) throw new RuntimeException("Authority not found!");
+
+        User user = userOptional.get();
+        authority = authorityOptional.get();
+
+        Set<Authority> authorities = new HashSet<>();
+        authorities.add(authority);
+        user.setAuthorities(authorities);
+
+        userRepository.save(user);
     }
 
     @Override

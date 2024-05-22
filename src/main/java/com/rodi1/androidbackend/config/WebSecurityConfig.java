@@ -14,10 +14,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
     private final UserDetailsService userDetailsService;
+
+    public WebSecurityConfig(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -27,6 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers("/h2-console/**").permitAll() // здесь выдаются права доступа
                 .antMatchers("/androidbackend/v1/user/register").permitAll()
                 .antMatchers("/androidbackend/v1/user/username/{username}").permitAll()
+                .antMatchers("/androidbackend/v1/authority/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers("/androidbackend/v1/user/authority/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers("/androidbackend/v1/user/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and()

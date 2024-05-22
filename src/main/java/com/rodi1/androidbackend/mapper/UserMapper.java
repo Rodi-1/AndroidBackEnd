@@ -31,6 +31,16 @@ public class UserMapper {
         return user;
     }
 
+    public UserRegisterDto toUserRegisterDto(User user) {
+
+        return UserRegisterDto.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .email(user.getPassword())
+                .build();
+    }
+
     public UserProfileDto toUserProfileDto(User user) {
         return UserProfileDto.builder()
                 .id(user.getId())
